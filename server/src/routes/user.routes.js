@@ -7,7 +7,7 @@ const router = Router()
 
 router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
-router.route("/verify").post(verifyLogin);
+router.route("/verify").get(verifyLogin);
 
 
 //secured routes

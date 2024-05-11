@@ -28,21 +28,12 @@ function Login() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/users/login', { username, password });
-      if (response.status === 200) {
-        // Redirect to dashboard
-        navigate('/dashboard');
-      } else {
-        // Handle other status codes
-        console.error('Unexpected status code:', response.status);
-      }
+      const response = await axios.post('http://localhost:3000/api/v1/users/login', { username, password },{ withCredentials: true });
+
+      navigate('/dashboard');
     } catch (error) {
       // Handle server errors
-      if (error.response) {
-        console.error('Server error:', error.response.data);
-      } else {
-        console.error('Network error:', error.message);
-      }
+      console.error('Error logging in:', error);
     }
   };
 

@@ -10,14 +10,18 @@ function Dashboard() {
     const checkAuthentication = async () => {
       try {
         // Fetch user authentication status from the server
-        const response = await axios.post('http://localhost:3000/api/v1/users/verify');
+        const response = await axios.get('http://localhost:3000/api/v1/users/verify', { withCredentials: true });
+        
+        if (response.status === 200) {
+          setLoading(false);
+        }
 
         console.log(response);
       } catch (error) {
         // Handle error (e.g., network error)
         console.error('Failed to check authentication:', error);
         // Redirect to login page in case of error
-        //navigate('/login');
+        navigate('/login');
       }
     };
 
