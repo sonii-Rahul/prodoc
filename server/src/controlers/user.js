@@ -30,7 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
     req.session.user = {
         _id: newUser._id,
         username: newUser.username,
-        Email: newUser.email,
+        Email: newUser.Email,
         // Add any other relevant user data to the session
     };
 
@@ -39,7 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
         user: {
             _id: newUser._id,
             username: newUser.username,
-            Email: newUser.email,
+            Email: newUser.Email,
             // Omit sensitive data such as passwords
         }
     }, "User registered successfully"));
@@ -62,29 +62,36 @@ const loginUser = asyncHandler(async (req, res) => {
     const isPasswordValid = await checkuser.isPasswordCorrect(password);
 
     if (!isPasswordValid) {
-        throw new apiError("401", "Incorrect password");
+       
+        return res.status(401).json({
+            message: "incorrect password or username"
+        });
+        
     }
 
     // Set user in session
-    req.session.user = {
+    const user=req.session.user = {
         _id: checkuser._id,
         username: checkuser.username,
+        Email:checkuser.Email
         // Add any other relevant user data to the session
     };
-    console.log("loged in ");
+    console.log(user);
 
-    return res.status(200).json(new apiResponse(200, {
-        user: {
-            _id: checkuser._id,
-            username: checkuser.username,
-            // Omit sensitive data such as passwords and tokens
-        }
-    }, "User logged in successfully"));
+    return res.status(200).json({
+        user,
+        message: "User logged in successfully"
+    });
 });
 
 
 const logOutUser = asyncHandler(async (req, res) => {
     // Destroy the user's session
+    const user = req.session.user;
+    console.log(user)
+    if(!user){
+        throw new apiError("401", "unauthorised");
+    }
     req.session.destroy(err => {
         if (err) {
             throw new apiError("500", "Unable to logout user");
@@ -97,25 +104,26 @@ const logOutUser = asyncHandler(async (req, res) => {
 
 const verifyLogin = async (req, res) => {
     try {
-        // Retrieve user data from the session
         const user = req.session.user;
-        console.log(user);
-        console.log("error is here");
 
         if (user) {
-            // If user exists in session, send user data in the response
-            const response = new apiResponse(200, { user }, "User verified");
-            return res.status(response.statuscode).json(response);
+            return res.status(200).json({
+                user,
+                message: "User verified"
+            });
         } else {
-            // If user doesn't exist in session, send 404 Not Found
-            const response = new apiResponse(404, null, "Unauthorises access");
-            return res.status(response.statuscode).json(response);
+            return res.status(404).json({
+                error: "Unauthorised access",
+                message: "User not found in session"
+            });
         }
     } catch (error) {
         // Handle errors
         console.error('An error occurred:', error);
-        const response = new apiResponse(500, null, "Internal Server Error");
-        return res.status(response.statuscode).json(response);
+        return res.status(500).json({
+            error: "Internal Server Error",
+            message: error.message // Optionally include error message
+        });
     }
 };
 

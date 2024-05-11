@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ArrowRight } from 'lucide-react';
+import {useNavigate,Link} from 'react-router-dom'
 
 export function Signup() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullname: '',
         Email: '',
@@ -24,6 +26,7 @@ export function Signup() {
                 // Show success popup
         
                 alert('Registered successfully!');
+                navigate('/login');
             }
 
             
@@ -42,13 +45,9 @@ export function Signup() {
                         <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign up</h2>
                         <p className="mt-2 text-base text-gray-600">
                             Already have an account?{' '}
-                            <a
-                                href="#"
-                                title=""
-                                className="font-medium text-black transition-all duration-200 hover:underline"
-                            >
-                                Sign In
-                            </a>
+                            <Link to="/login" className="font-semibold text-black transition-all duration-200 hover:underline">
+                Sign In
+              </Link>
                         </p>
                         <form onSubmit={handleSubmit} className="mt-8">
                             <div className="space-y-5">

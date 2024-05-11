@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link  } from 'react-router-dom';
 import axios from 'axios';
+
 
 function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
+  //Form validation
   const validateForm = () => {
     const errors = {};
     if (!username.trim()) {
@@ -20,6 +22,7 @@ function Login() {
     return errors;
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
@@ -28,12 +31,17 @@ function Login() {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/users/login', { username, password },{ withCredentials: true });
+      const response = await axios.post('http://localhost:3000/api/v1/users/login', { username, password }, { withCredentials: true });
+      console.log(response)
 
       navigate('/dashboard');
     } catch (error) {
       // Handle server errors
       console.error('Error logging in:', error);
+      if (error.response && error.response.status === 401) {
+       
+        alert('Wrong password or username. Please try again.');
+      }
     }
   };
 
@@ -46,31 +54,32 @@ function Login() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 ">
             Don&apos;t have an account?{' '}
-            <a
-              href="#"
-              title=""
-              className="font-semibold text-black transition-all duration-200 hover:underline"
-            >
-              Create a free account
-            </a>
+
+            <Link to="/signup" className="font-semibold text-black transition-all duration-200 hover:underline">
+                Create a free account
+              </Link>
           </p>
           <form onSubmit={handleSubmit} className="mt-8">
+          <div className="flex items-center justify-between">
+                  <label htmlFor="username" className="text-base font-medium text-gray-900">
+                    username
+                  </label>
+                 
+                </div>
             <div className="space-y-5">
-              <div>
-                <label htmlFor="username" className="text-base font-medium text-gray-900">
-                  Username
-                </label>
-                <div className="mt-2">
+            
+              <div className="mt-2">
+                <div className="flex items-center justify-between">
                   <input
                     id="username"
-                    className={`flex h-10 w-full rounded-md border ${
-                      errors.username ? 'border-red-500' : 'border-gray-300'
-                    } bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
+                    className={`flex h-10  w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-gray-300'
+                      } bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
+
                   {errors.username && (
                     <p className="text-red-500 text-sm mt-1">{errors.username}</p>
                   )}
@@ -81,16 +90,14 @@ function Login() {
                   <label htmlFor="password" className="text-base font-medium text-gray-900">
                     Password
                   </label>
-                  <a href="#" title="" className="text-sm font-semibold text-black hover:underline">
-                    Forgot password?
-                  </a>
+                 
                 </div>
+                
                 <div className="mt-2">
                   <input
                     id="password"
-                    className={`flex h-10 w-full rounded-md border ${
-                      errors.password ? 'border-red-500' : 'border-gray-300'
-                    } bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
+                    className={`flex h-10 w-full rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'
+                      } bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50`}
                     type="password"
                     placeholder="Password"
                     value={password}
@@ -99,7 +106,11 @@ function Login() {
                   {errors.password && (
                     <p className="text-red-500 text-sm mt-1">{errors.password}</p>
                   )}
+                  
                 </div>
+                <a href="#" title="" className="text-sm font-semibold text-black hover:underline">
+                    Forgot password?
+                  </a>
               </div>
               <div>
                 <button

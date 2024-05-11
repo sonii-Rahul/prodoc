@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { logOutUser, loginUser,registerUser,verifyLogin} from "../controlers/user.js";
+import {verifyUser} from "../middleware/authmiddleware.js"
 
 
 
@@ -11,7 +12,7 @@ router.route("/verify").get(verifyLogin);
 
 
 //secured routes
-router.route("/logout").post(verifyLogin,logOutUser)
+router.route("/logout").post(logOutUser)
 export default router
 
 
