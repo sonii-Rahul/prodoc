@@ -47,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
-    
+
     if (!username || !password) {
         throw new apiError("400", "All user fields are required");
     }
@@ -70,6 +70,7 @@ const loginUser = asyncHandler(async (req, res) => {
         username: checkuser.username,
         // Add any other relevant user data to the session
     };
+    console.log("loged in ");
 
     return res.status(200).json(new apiResponse(200, {
         user: {
@@ -79,6 +80,7 @@ const loginUser = asyncHandler(async (req, res) => {
         }
     }, "User logged in successfully"));
 });
+
 
 const logOutUser = asyncHandler(async (req, res) => {
     // Destroy the user's session
@@ -96,6 +98,8 @@ const verifyLogin = async (req, res) => {
     try {
         // Retrieve user data from the session
         const user = req.session.user;
+        console.log(user);
+        console.log("error is here");
 
         if (user) {
             // If user exists in session, send user data in the response
