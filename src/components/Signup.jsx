@@ -28,11 +28,16 @@ export function Signup() {
                 alert('Registered successfully!');
                 navigate('/login');
             }
+            
 
             
             // Handle success, redirect user or show a success message
         } catch (error) {
             console.error('Error:', error);
+            if(error.response.status === 500){
+                alert('user alredy exist ');
+
+            }
             // Handle error, show an error message to the user
         }
     };
