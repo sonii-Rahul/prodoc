@@ -53,5 +53,7 @@ navigate to root again
 ```bash
 npm run dev
 
+##create a .env file and copy sample.env content and setup with your url
+
 
 
