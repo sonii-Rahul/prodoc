@@ -15,7 +15,7 @@ function Dashboard() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get('https://prodoc-server.onrender.com/api/v1/users/verify', { withCredentials: true });
+        const response = await axios.get('https://prodoc-server.onrender.com/api/v1/users/verify',{}, { withCredentials: true });
         if (response.status === 200) {
           setUserData(response.data.user); // Destructure user data from response
         }
