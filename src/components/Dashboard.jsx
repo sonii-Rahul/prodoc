@@ -15,7 +15,7 @@ function Dashboard() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get('https://prodoc-server.onrender.com/api/v1/users/verify',{ withCredentials: true });
+        const response = await axios.get('/api/v1/users/verify',{ withCredentials: true });
         if (response.status === 200) {
           setUserData(response.data.user); // Destructure user data from response
         }
@@ -34,7 +34,7 @@ function Dashboard() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('https://prodoc-server.onrender.com/api/v1/users/logout', {},
+      await axios.post('/api/v1/users/logout', {},
         { withCredentials: true });
       navigate('/login'); // Redirect to login page after successful logout
     } catch (error) {

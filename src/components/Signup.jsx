@@ -19,7 +19,7 @@ export function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://prodoc-server.onrender.com/api/v1/users/register', formData);
+            const response = await axios.post('/api/v1/users/register', formData);
             console.log('Response:', response.data);
 
             if (response.status === 201) {
