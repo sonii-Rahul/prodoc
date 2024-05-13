@@ -21,7 +21,7 @@ function Dashboard() {
         }
       } catch (error) {
         console.error('Failed to check authentication:', error);
-        navigate('/login');
+           navigate('/login');
       } finally {
         setLoading(false); // Set loading to false regardless of success or failure
       }
