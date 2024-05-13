@@ -15,13 +15,13 @@ function Dashboard() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get('/api/v1/users/verify',{ withCredentials: true });
+        const response = await axios.get('/api/v1/users/verify',{},{ withCredentials: true });
         if (response.status === 200) {
           setUserData(response.data.user); // Destructure user data from response
         }
       } catch (error) {
         console.error('Failed to check authentication:', error);
-       // navigate('/login');
+        navigate('/login');
       } finally {
         setLoading(false); // Set loading to false regardless of success or failure
       }
